@@ -1,0 +1,38 @@
+[tool.ruff]
+exclude = ["main_window.py", "home_ui.py", "resources.py", "resources_rc.py"]
+
+[tool.mypy]
+strict_optional = false
+disable_error_code = ["union-attr", "annotation-unchecked", "import-untyped"]
+explicit_package_bases = true
+warn_unused_ignores = true
+exclude = ['tests']
+
+[tool.poetry]
+name = "poetry2nix_example"
+version = "0.1.0"
+description = "Minimal Example for Nix2Poetry"
+authors = ["zierf <9168602+zierf@users.noreply.github.com>"]
+license = "MIT"
+packages = [
+  { include = "poetry2nix_example", from = "." },
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "~3.12"
+PySide6 = "6.7.2"
+# PySide6 includes PySide6_Essentials and PySide6_Addons
+#PySide6_Addons= "6.7.2"
+#PySide6_Essentials = "6.7.2"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+
+[tool.poetry.scripts]
+poetry2nix-example = 'poetry2nix_example.example:main'
