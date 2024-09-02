@@ -1,8 +1,9 @@
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtCore import QPoint
+
 from .subfolder import submodule
 
 def main():
-    print(f"\nLoaded External Module: {QGuiApplication}")
+    print(f"\nLoaded External Module: {QPoint}")
     submodule.printSubfolder()
 
 if __name__ == "__main__":

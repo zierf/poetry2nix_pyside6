@@ -1,2 +1,2 @@
 def printSubfolder():
-    print(f"\nHello from subfolder.")
+    print(f"\nMessage from subfolder.")
