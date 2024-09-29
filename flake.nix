@@ -29,13 +29,8 @@
           preferWheels = true;
 
           # extend official overrides
-          # https://github.com/nix-community/poetry2nix/blob/7619e43c2b48c29e24b88a415256f09df96ec276/overrides/default.nix#L2743-L2805
-          overrides = defaultPoetryOverrides.extend (final: prev: {
-            # Overrides for PySide6
-            # https://github.com/nix-community/poetry2nix/issues/1191#issuecomment-1707590287
-            pyside6 = final.pkgs.python312.pkgs.pyside6;
-            #shiboken6 = final.pkgs.python3.pkgs.shiboken6;
-          });
+          # https://github.com/nix-community/poetry2nix/blob/aea314e63c34d690b582f8d2b1717e2abe743b51/overrides/default.nix#L2776-L2844
+          # overrides = defaultPoetryOverrides.extend (final: prev: { });
 
           pythonRelaxDeps = [ ];
 
