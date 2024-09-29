@@ -12,12 +12,24 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, poetry2nix, ... } @inputs:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      poetry2nix,
+      ...
+    }@inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system}.extend poetry2nix.overlays.default;
 
-        inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryApplication mkPoetryEnv defaultPoetryOverrides;
+        inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; })
+          mkPoetryApplication
+          mkPoetryEnv
+          #defaultPoetryOverrides
+          ;
 
         myApp = mkPoetryApplication rec {
           projectDir = self;
@@ -34,47 +46,48 @@
 
           pythonRelaxDeps = [ ];
 
-          dependencies = (with pkgs; [
-            dbus
-            fontconfig
-            freetype
-            glib
-            libGL
-            libkrb5
-            libpulseaudio
-            libva
-            libxkbcommon
-            openssl
-            qt6.full
-            stdenv.cc.cc.lib
-            wayland
-            xorg.libX11
-            xorg.libxcb
-            xorg.libXi
-            xorg.libXrandr
-          ]);
+          dependencies = (
+            with pkgs;
+            [
+              dbus
+              fontconfig
+              freetype
+              glib
+              libGL
+              libkrb5
+              libpulseaudio
+              libva
+              libxkbcommon
+              openssl
+              qt6.full
+              stdenv.cc.cc.lib
+              wayland
+              xorg.libX11
+              xorg.libxcb
+              xorg.libXi
+              xorg.libXrandr
+            ]
+          );
 
-          buildInputs = (with pkgs; [
-            qt6.qtbase
-          ]) ++ dependencies;
+          buildInputs =
+            (with pkgs; [
+              qt6.qtbase
+            ])
+            ++ dependencies;
 
-          nativeBuildInputs = (with pkgs; [
-            makeWrapper
-            qt6.wrapQtAppsHook
-          ]) ++ dependencies;
+          nativeBuildInputs =
+            (with pkgs; [
+              makeWrapper
+              qt6.wrapQtAppsHook
+            ])
+            ++ dependencies;
 
           propogatedBuildInputs = (with pkgs; [ ]) ++ dependencies;
-
-          # libraryPath = pkgs.lib.makeLibraryPath (with pkgs; [
-          #   "$out"
-          # ] ++ dependencies);
-
-          # binaryPath = pkgs.lib.makeBinPath (with pkgs; [
-          #   "$out"
-          # ] ++ dependencies);
         };
       in
       {
+        formatter = pkgs.nixfmt-rfc-style;
+
         # $> nix run
         # apps = {
         #   default = {
@@ -104,10 +117,12 @@
           #inputsFrom = [ self.apps.${system}.default ];
           inputsFrom = [ self.packages.${system}.myApp ];
 
-          packages = with pkgs; [
-            poetry
-          ]
-          ++ myApp.dependencies;
+          packages =
+            with pkgs;
+            [
+              poetry
+            ]
+            ++ myApp.dependencies;
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath packages;
         };
